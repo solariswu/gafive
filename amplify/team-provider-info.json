@@ -1,0 +1,15 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-gafive-dev-140818-authRole",
+            "UnauthRoleArn": "arn:aws:iam::852307403105:role/amplify-gafive-dev-140818-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::852307403105:role/amplify-gafive-dev-140818-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-gafive-dev-140818-deployment",
+            "UnauthRoleName": "amplify-gafive-dev-140818-unauthRole",
+            "StackName": "amplify-gafive-dev-140818",
+            "StackId": "arn:aws:cloudformation:us-east-1:852307403105:stack/amplify-gafive-dev-140818/7a24f820-4ae9-11ea-8096-0e4a688d3275",
+            "AmplifyAppId": "d305cm2yqetr1z"
+        }
+    }
+}
