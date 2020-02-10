@@ -50,3 +50,63 @@ export const queryQuestionsByIndex = `query QueryQuestionsByIndex($index: Int!, 
   }
 }
 `;
+export const getGafiveHistory = `query GetGafiveHistory($id: ID!) {
+  getGafiveHistory(id: $id) {
+    id
+    username
+    date
+    time
+    itemId
+    response
+    result
+    round
+    genre
+  }
+}
+`;
+export const listGafiveHistories = `query ListGafiveHistories(
+  $filter: TableGafiveHistoryFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listGafiveHistories(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      username
+      date
+      time
+      itemId
+      response
+      result
+      round
+      genre
+    }
+    nextToken
+  }
+}
+`;
+export const queryGafiveHistoriesByUsernameDateIndex = `query QueryGafiveHistoriesByUsernameDateIndex(
+  $username: String!
+  $first: Int
+  $after: String
+) {
+  queryGafiveHistoriesByUsernameDateIndex(
+    username: $username
+    first: $first
+    after: $after
+  ) {
+    items {
+      id
+      username
+      date
+      time
+      itemId
+      response
+      result
+      round
+      genre
+    }
+    nextToken
+  }
+}
+`;

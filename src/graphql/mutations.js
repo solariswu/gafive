@@ -40,3 +40,45 @@ export const deleteGaFiveQList = `mutation DeleteGaFiveQList($input: DeleteGAFiv
   }
 }
 `;
+export const createGafiveHistory = `mutation CreateGafiveHistory($input: CreateGafiveHistoryInput!) {
+  createGafiveHistory(input: $input) {
+    id
+    username
+    date
+    time
+    itemId
+    response
+    result
+    round
+    genre
+  }
+}
+`;
+export const updateGafiveHistory = `mutation UpdateGafiveHistory($input: UpdateGafiveHistoryInput!) {
+  updateGafiveHistory(input: $input) {
+    id
+    username
+    date
+    time
+    itemId
+    response
+    result
+    round
+    genre
+  }
+}
+`;
+export const deleteGafiveHistory = `mutation DeleteGafiveHistory($input: DeleteGafiveHistoryInput!) {
+  deleteGafiveHistory(input: $input) {
+    id
+    username
+    date
+    time
+    itemId
+    response
+    result
+    round
+    genre
+  }
+}
+`;

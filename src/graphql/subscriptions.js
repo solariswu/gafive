@@ -58,3 +58,81 @@ export const onDeleteGaFiveQList = `subscription OnDeleteGaFiveQList(
   }
 }
 `;
+export const onCreateGafiveHistory = `subscription OnCreateGafiveHistory(
+  $id: ID
+  $username: String
+  $date: AWSDate
+  $time: AWSTime
+  $itemId: Int
+) {
+  onCreateGafiveHistory(
+    id: $id
+    username: $username
+    date: $date
+    time: $time
+    itemId: $itemId
+  ) {
+    id
+    username
+    date
+    time
+    itemId
+    response
+    result
+    round
+    genre
+  }
+}
+`;
+export const onUpdateGafiveHistory = `subscription OnUpdateGafiveHistory(
+  $id: ID
+  $username: String
+  $date: AWSDate
+  $time: AWSTime
+  $itemId: Int
+) {
+  onUpdateGafiveHistory(
+    id: $id
+    username: $username
+    date: $date
+    time: $time
+    itemId: $itemId
+  ) {
+    id
+    username
+    date
+    time
+    itemId
+    response
+    result
+    round
+    genre
+  }
+}
+`;
+export const onDeleteGafiveHistory = `subscription OnDeleteGafiveHistory(
+  $id: ID
+  $username: String
+  $date: AWSDate
+  $time: AWSTime
+  $itemId: Int
+) {
+  onDeleteGafiveHistory(
+    id: $id
+    username: $username
+    date: $date
+    time: $time
+    itemId: $itemId
+  ) {
+    id
+    username
+    date
+    time
+    itemId
+    response
+    result
+    round
+    genre
+  }
+}
+`;

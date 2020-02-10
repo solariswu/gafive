@@ -25,7 +25,6 @@ class Execise extends Component {
             currentIndex: 0,
             username: '',
             sendHistory: null,
-            addSpacedRepetition: null,
             buttonText: 'Submit',
             selectedOption: '',
             loading: true,
@@ -34,54 +33,25 @@ class Execise extends Component {
       }
 
     // async 
-    async addHistory (sendHistory, tryNum, userAnswer) {
+    async addHistory (sendHistory, round, userAnswer) {
         const currentItem = this.state.items[this.state.currentIndex];
         const date = new Date();
      
         const input = {
          //   id: this.state.username + yyyy + mm + dd + hh + mi + ss + this.state.session + this.state.part + tryNum,
             username: this.state.username,
-            result: userAnswer === currentItem.Answer,
-            tryNum: tryNum,
-            answer: userAnswer,
-            itemId: currentItem.id,
-            sessionId: currentItem.session,
-            partId: currentItem.type,
-            index: currentItem.index,
             date: getFormatedDate(date),
             time: getFormatedTime(date),
-            genre: 'lesson'
+            itemId: currentItem.id,
+            response: userAnswer,
+            result: userAnswer === currentItem.Answer,
+            round: round,
+            genre: 'test'
         }
     
         try {
             console.log ('addHistory:', input);
             await sendHistory({input})
-        } catch (err) {
-            console.error(err);
-        }
-    }
-
-    async addToSpacedRepetition (addSpacedRepetition) {
-        const currentItem = this.state.items[this.state.currentIndex];
-        const today = new Date();
-        let tomorrow = new Date(today);
-        console.log ("today:", today);
-        console.log ("tomorrow:", tomorrow);
-
-        tomorrow.setDate(tomorrow.getDate() + 1);
-     
-        const input = {
-         //   id: this.state.username + yyyy + mm + dd + hh + mi + ss + this.state.session + this.state.part + tryNum,
-            username: this.state.username,
-            contentId: currentItem.id,
-            date: getFormatedDate(tomorrow),
-            stageIdx: 0, // initial value for SRS item, SRS will update that later
-            times: 0 // initial value for SRS item
-        }
-    
-        try {
-            console.log ("add to SRS:", input);
-            await addSpacedRepetition({input})
         } catch (err) {
             console.error(err);
         }
@@ -324,16 +294,9 @@ class Execise extends Component {
                     }}
                 </Connect>
 
-                <Connect mutation={graphqlOperation(mutations.updateGaFiveQList)}>
+                <Connect mutation={graphqlOperation(mutations.createGafiveHistory)}>
                   {({mutation}) => {
                       this.state.sendHistory = mutation;
-                      return (<div></div>);
-                  }}
-                </Connect>
-
-                <Connect mutation={graphqlOperation(mutations.updateGaFiveQList)}>
-                  {({mutation}) => {
-                      this.state.addSpacedRepetition = mutation;
                       return (<div></div>);
                   }}
                 </Connect>
