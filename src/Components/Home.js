@@ -11,9 +11,15 @@ class Home extends Component {
           <Container>
               <Row>
                 <Col>
-                    <Card className="mt-1" style={{ width: '18rem' }} key='goover'>
+                    <Card className="mt-1" style={{ width: '18rem' }} key='study'>
                         <Card.Body>
-                           <Card.Link as={Link} to={`/workflow`}>Study</Card.Link>
+                           <Card.Link as={Link} to={{
+                               pathname:'/execise',
+                               execiseProps:{
+                                   flowStep: 'goover',
+                                   round: 1
+                               }
+                               }}>Study</Card.Link>
                         </Card.Body>
                     </Card>
                 </Col>

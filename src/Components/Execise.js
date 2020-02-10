@@ -33,7 +33,7 @@ class Execise extends Component {
       }
 
     // async 
-    async addHistory (sendHistory, round, userAnswer) {
+    async addHistory (sendHistory, userAnswer) {
         const currentItem = this.state.items[this.state.currentIndex];
         const date = new Date();
      
@@ -42,10 +42,10 @@ class Execise extends Component {
             username: this.state.username,
             date: getFormatedDate(date),
             time: getFormatedTime(date),
-            itemId: currentItem.id,
+            itemId: currentItem.index,
             response: userAnswer,
             result: userAnswer === currentItem.Answer,
-            round: round,
+            round: this.props.location.execiseProps.round,
             genre: 'test'
         }
     
@@ -78,13 +78,7 @@ class Execise extends Component {
              });
              clearInterval(this.interval);
              this.state.results[this.state.currentIndex] = (this.state.selectedOption === currentItem.Answer);
-            if (this.props.firstTime === true) {
-                this.addHistory (this.state.sendHistory, 1, this.state.selectedOption);
-                if (this.state.selectedOption !== currentItem.Answer) 
-                    this.addToSpacedRepetition (this.state.addSpacedRepetition);
-            }
-            else 
-                this.addHistory (this.state.sendHistory, 2, this.state.selectedOption)
+             this.addHistory (this.state.sendHistory, this.state.selectedOption);
         }
         //console.log("You have submitted:", result);
     }

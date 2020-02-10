@@ -32,7 +32,7 @@ class WorkFlow extends Component {
                                pathname:'/execise',
                                execiseProps:{
                                    flowStep: 'audit',
-                                   firstTime: false
+                                   round: 1
                                }
                                }}>Correction Check</Card.Link>
                         </Card.Body>
