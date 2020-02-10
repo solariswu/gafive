@@ -10,7 +10,7 @@ import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import { Container } from 'react-bootstrap';
 import { withRouter } from 'react-router';
 
-import { getFormatedDate, getFormatedTime, randomsort } from '../consts/Utilities';
+import { getFormatedDate, getFormatedTimestamp, randomsort } from '../consts/Utilities';
 
 import { ResultPie } from './ResultPie';
 import { ResultBar } from './ResultBar';
@@ -28,7 +28,7 @@ class Execise extends Component {
             buttonText: 'Submit',
             selectedOption: '',
             loading: true,
-            remainSeconds: 30 // todo, configurable later
+            remainSeconds: this.props.location.execiseProps.timeoutValue // todo, configurable later
         };
       }
 
@@ -40,8 +40,7 @@ class Execise extends Component {
         const input = {
          //   id: this.state.username + yyyy + mm + dd + hh + mi + ss + this.state.session + this.state.part + tryNum,
             username: this.state.username,
-            date: getFormatedDate(date),
-            time: getFormatedTime(date),
+            timestamp: getFormatedTimestamp(date),
             itemId: currentItem.index,
             response: userAnswer,
             result: userAnswer === currentItem.Answer,
@@ -102,7 +101,7 @@ class Execise extends Component {
     
     resetCoundDown = () => {
         clearInterval(this.interval);
-        this.setState({remainSeconds: 60});
+        this.setState({remainSeconds: this.props.location.execiseProps.timeoutValue});
         this.interval = setInterval(this.tick, 1000);
     }
 
@@ -164,12 +163,12 @@ class Execise extends Component {
         const type = Object.keys(data)[0];
         let itemData = data[type];
 
-        itemData.items.sort(randomsort);
-
         switch (flowStep) {
             case 'goover':
             break;
             case 'audit': 
+                //shuffle the questions
+                itemData.items.sort(randomsort);
                 itemData.items = itemData.items.slice(0, 10);
             break;
             default:
@@ -254,7 +253,9 @@ class Execise extends Component {
         // No data, retrieve it first. 
         return (
             <div>
-                <Connect query={graphqlOperation( queries.queryQuestionsByIndex, {index: 5, limit: 60} )}>
+                <Connect query={graphqlOperation( queries.queryQuestionsByIndex, 
+                                    {index: this.props.location.execiseProps.lastFinishedIndex, 
+                                     imit: 60} )}>
                 {/* <Connect query={graphqlOperation(
                                     this.getGraphQLOperation(this.props.location.execiseProps.flowStep), 
                                     this.getGraphQLParam(this.props.location.execiseProps.flowStep, 

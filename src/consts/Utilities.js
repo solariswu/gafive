@@ -37,6 +37,10 @@ export const getFormatedTime = (date) => {
 
  };
 
+ export const getFormatedTimestamp = (date) => {
+     return (getFormatedDate(date) + 'T' + getFormatedTime(date));
+ }
+
  export const randomsort = (a, b) => {
     return Math.random()>.5 ? -1 : 1;
 }

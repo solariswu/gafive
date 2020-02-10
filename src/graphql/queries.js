@@ -54,8 +54,7 @@ export const getGafiveHistory = `query GetGafiveHistory($id: ID!) {
   getGafiveHistory(id: $id) {
     id
     username
-    date
-    time
+    timestamp
     itemId
     response
     result
@@ -73,8 +72,7 @@ export const listGafiveHistories = `query ListGafiveHistories(
     items {
       id
       username
-      date
-      time
+      timestamp
       itemId
       response
       result
@@ -98,8 +96,23 @@ export const queryGafiveHistoriesByUsernameDateIndex = `query QueryGafiveHistori
     items {
       id
       username
-      date
-      time
+      timestamp
+      itemId
+      response
+      result
+      round
+      genre
+    }
+    nextToken
+  }
+}
+`;
+export const queryLastestIndex = `query QueryLastestIndex($round: Int) {
+  queryLastestIndex(round: $round) {
+    items {
+      id
+      username
+      timestamp
       itemId
       response
       result

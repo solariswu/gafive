@@ -2,11 +2,31 @@
 import React, { Component } from '../../node_modules/react';
 import { Container, Row, Col, Card } from '../../node_modules/react-bootstrap';
 import { Link } from 'react-router-dom';
+import { graphqlOperation } from "aws-amplify";
+
+import { Connect } from "aws-amplify-react";
+import * as queries from '../graphql/queries';
 
 class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false,
+      round: 1,
+      lastFinishedIndex: 0,
+      timeoutValue: 60 // todo, configurable later
+    };
+  }
 
-    render () {
-        
+  render () {
+        // if (this.state.lastFinishedIndex === -2) 
+        //   return (
+        //     <Connect query={graphqlOperation( queries.queryQuestionsByIndex, 
+        //       {index: this.props.location.lastFinishedIndex, limit: 60} )}>
+                
+        //     </Connect>
+        //   );
+
         return (
           <Container>
               <Row>
@@ -17,7 +37,9 @@ class Home extends Component {
                                pathname:'/execise',
                                execiseProps:{
                                    flowStep: 'goover',
-                                   round: 1
+                                   round: this.state.round,
+                                   lastFinishedIndex: this.state.lastFinishedIndex,
+                                   timeoutValue: this.state.timeoutValue
                                }
                                }}>Study</Card.Link>
                         </Card.Body>
