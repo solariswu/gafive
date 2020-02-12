@@ -17,9 +17,10 @@ def main():
     # for j in range(sheet.ncols): 
     #     print((sheet.cell_value(1, j))) 
 
-    for i in range(1, sheet.nrows-1):
+    for i in range(1, sheet.nrows):
+
         # for j in range(sheet.ncols): 
-        #     print((sheet.cell_value(i, j))) 
+        #     print(str(sheet.cell_value(i, j)))
 
         print (i)
         idStr = ''
@@ -33,6 +34,8 @@ def main():
         if index < 10 :
             idStr = idStr + '0'
         idStr = idStr + str(index)
+
+        # print ("idStr:" + idStr)
 
         # if sheet.cell_value(i,1) == 4 :
         #    baseStr = ' '
@@ -65,19 +68,20 @@ def main():
                     'S': str(sheet.cell_value(i, 4 + ord(sheet.cell_value(i,9))- ord('A')))
                 },
                 'type': {
-                    'S': '1'
+                    'S': str(int(sheet.cell_value(i,0)))
                 },
                 'index': {
                     'N': str(i)
                 }
             })
 
+        print (item_key)
         response = client.put_item(
             TableName=tableName,
             Item=item_key,
         )
     
-        # print (response)
+        print (response)
 
 if __name__ == '__main__':
     main()

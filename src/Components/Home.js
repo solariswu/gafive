@@ -13,19 +13,30 @@ class Home extends Component {
     this.state = {
       loading: false,
       round: 1,
-      lastFinishedIndex: 0,
+      lastFinishedIndex: -2,
       timeoutValue: 60 // todo, configurable later
     };
   }
 
   render () {
-        // if (this.state.lastFinishedIndex === -2) 
-        //   return (
-        //     <Connect query={graphqlOperation( queries.queryQuestionsByIndex, 
-        //       {index: this.props.location.lastFinishedIndex, limit: 60} )}>
+        if (this.state.lastFinishedIndex === -2) 
+          return (
+            <Connect query={graphqlOperation( queries.queryLastestIndex, {round: 1} )}>
+              {({ data, loading, errors }) => {
+                console.log ('rendering 1', data, loading, errors);
+                if (loading || !data) return (<h3>Loading...</h3>);
+                if (errors.lenth > 0 ) return (<h3>Error</h3>);
+
+                console.log ('rendering 2', data, loading, errors);
                 
-        //     </Connect>
-        //   );
+                const type = Object.keys(data)[0];
+                let itemData = data[type];
+                this.setState({
+                  lastFinishedIndex: itemData.items[0].itemId,
+                });
+              }}
+            </Connect>
+          );
 
         return (
           <Container>
