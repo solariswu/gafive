@@ -16,11 +16,12 @@ export const ResultBar = (props) => {
     if (results.length > MAX_RESULT_DISPLAY_IN_BAR) {
         let centerPoint = props.results.indexOf('-');
         if (centerPoint >= MAX_RESULT_DISPLAY_IN_BAR) {
-            offset = centerPoint;
-            if (centerPoint + MAX_RESULT_DISPLAY_IN_BAR > results.length)
-                results = props.results.slice(centerPoint);
+            offset = parseInt(centerPoint/MAX_RESULT_DISPLAY_IN_BAR);
+            if ( (offset + 1) * MAX_RESULT_DISPLAY_IN_BAR >= results.length)
+                results = props.results.slice(offset*MAX_RESULT_DISPLAY_IN_BAR);
             else
-                results = props.results.slice(centerPoint, MAX_RESULT_DISPLAY_IN_BAR+centerPoint);
+                results = props.results.slice(offset*MAX_RESULT_DISPLAY_IN_BAR, 
+                                              (offset+1)*MAX_RESULT_DISPLAY_IN_BAR);
         }
         else
             results = props.results.slice(0, MAX_RESULT_DISPLAY_IN_BAR);
@@ -38,7 +39,7 @@ export const ResultBar = (props) => {
                                                        key={index}
                                                        className="mr-1"
                                                        >
-                                                           {index+1+offset}
+                                                           {offset*MAX_RESULT_DISPLAY_IN_BAR+index+1}
                                                        </Button>) }
             </ButtonGroup>
         </div>
