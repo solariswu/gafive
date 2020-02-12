@@ -31,9 +31,15 @@ class Home extends Component {
                 
                 const type = Object.keys(data)[0];
                 let itemData = data[type];
-                this.setState({
-                  lastFinishedIndex: itemData.items[0].itemId,
-                });
+
+                if (itemData.items.length === 0) 
+                  this.setState({
+                    lastFinishedIndex: 0,
+                  });
+                else 
+                  this.setState({
+                    lastFinishedIndex: itemData.items[0].itemId,
+                  });
               }}
             </Connect>
           );
