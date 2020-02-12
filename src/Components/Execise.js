@@ -255,7 +255,7 @@ class Execise extends Component {
             <div>
                 <Connect query={graphqlOperation( queries.queryQuestionsByIndex, 
                                     {index: this.props.location.execiseProps.lastFinishedIndex, 
-                                     imit: 60} )}>
+                                     limit: 60} )}>
                 {/* <Connect query={graphqlOperation(
                                     this.getGraphQLOperation(this.props.location.execiseProps.flowStep), 
                                     this.getGraphQLParam(this.props.location.execiseProps.flowStep, 
