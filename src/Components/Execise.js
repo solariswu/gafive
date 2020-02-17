@@ -23,11 +23,14 @@ class Execise extends Component {
             items: [],
             results: [],
             currentIndex: 0,
-            username: '',
+            mounted: false,
             sendHistory: null,
+            updateHistory: null,
             buttonText: 'Submit',
             selectedOption: '',
             loading: true,
+            flowStep: "study",
+            round: this.props.location.execiseProps.round,
             remainSeconds: this.props.location.execiseProps.timeoutValue // todo, configurable later
         };
       }
@@ -38,8 +41,6 @@ class Execise extends Component {
         const date = new Date();
      
         const input = {
-         //   id: this.state.username + yyyy + mm + dd + hh + mi + ss + this.state.session + this.state.part + tryNum,
-            username: this.state.username,
             timestamp: getFormatedTimestamp(date),
             itemId: currentItem.index,
             response: userAnswer,
@@ -51,6 +52,19 @@ class Execise extends Component {
         try {
             console.log ('addHistory:', input);
             await sendHistory({input})
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    async updateHistoryReviewed (updateHistory, id) {
+        const input = {
+            id,
+            genre: 'reviewed'
+        }
+
+        try {
+            await updateHistory({input})
         } catch (err) {
             console.error(err);
         }
@@ -78,6 +92,9 @@ class Execise extends Component {
              clearInterval(this.interval);
              this.state.results[this.state.currentIndex] = (this.state.selectedOption === currentItem.Answer);
              this.addHistory (this.state.sendHistory, this.state.selectedOption);
+             if (this.state.items[this.state.currentIndex].historyId !== "") {
+                 this.updateHistoryReviewed (this.state.updateHistory, this.state.items[this.state.currentIndex].historyId )
+             }
         }
         //console.log("You have submitted:", result);
     }
@@ -132,82 +149,59 @@ class Execise extends Component {
     }
 
     componentDidMount() {
-            // const {session, part} = this.props.match.params;
-            // this.setState({session: 1, part: '1'});
-
-            console.log ('exec flow step:', this.props.location.execiseProps);
-            Auth.currentAuthenticatedUser({
-                bypassCache: false
-            }).then(user => {
-                this.setState({username: user.username});
-            });
-
-            this.interval = setInterval(this.tick, 1000);
-
-            //todo: search backend whether is first time testing today
-    }
-
-    getGraphQLOperation = (flowStep) => {
-        switch (flowStep) {
-            case 'goover': 
-                // return queries.querySynonymsSrsContent;
-            case 'audit':
-                // return queries.queryFirstTimeCorrectByUsername;
-            default :
-                return '';
-        }
+        console.log ('exec flow step:', this.props.location.execiseProps);
+            
+        if (this.props.location.execiseProps.round > 1)
+            this.state.flowStep = "goover";
+            
+        this.state.mounted = true;
+            
+        this.interval = setInterval(this.tick, 1000);
     }
 
     organiseDate =(flowStep, data) => {
-        
+
         const type = Object.keys(data)[0];
         let itemData = data[type];
 
         switch (flowStep) {
+            case 'study':
+                if (itemData.items.length < 60) {
+                    this.state.round = this.state.round + 1;
+                    this.state.flowStep = "goover";
+                }
+                else 
+                    this.state.flowStep = "done";
+                break;
             case 'goover':
-            break;
+                if (itemData.items.length + this.state.items.length > 60)
+                    itemData.items = itemData.items.slice(0, 60 - this.state.items.length);
+                this.state.flowStep = "audit";
+                break;
             case 'audit': 
-                //shuffle the questions
+                // randomly pick 20 questions which answered correctly.
                 itemData.items.sort(randomsort);
-                itemData.items = itemData.items.slice(0, 10);
-            break;
+                itemData.items = itemData.items.slice(0, 20);
+                this.state.flowStep = "done";
+                break;
             default:
                 break;
         }
 
-        const itemsLen = itemData.items.length;
+        const existingItemsLen = this.state.items.length;
 
          // initiate result.
-         for (let index = 0; index < itemsLen; index ++) {
-            if (type === 'queryQuestionsByIndex') 
-                this.state.items[index] = itemData.items[index]
-            else 
-                this.state.items[index] = itemData.items[index].content;
-            this.state.results[index] = '-';
-            this.shuffleItemAnswers (index);
-        }
-
-    }
-    getGraphQLParam = (flowStep, username) => {
-        const today = getFormatedDate(new Date());
-
-        const param1 = {
-            "filter": { 
-                username: { eq: username},
-                date: { le: today}},
-            limit: 15000};
-
-
-        const param2 = {
-            "username": username,
-            "genre": "lesson",
-            limit: 15000};
-
-        switch (flowStep) {
-            case 'goover':
-                return param1;
-            case 'audit':
-                return param2;
+         for (let index = 0; index < itemData.items.length; index ++) {
+            if (type === 'queryQuestionsByIndex') {
+                this.state.items[existingItemsLen + index] = itemData.items[index];
+                this.state.items[existingItemsLen + index].historyId = "";
+            }
+            else {
+                this.state.items[existingItemsLen + index] = itemData.items[index].content;
+                this.state.items[existingItemsLen + index].historyId = itemData.items[index].id;
+            }
+            this.state.results[existingItemsLen + index] = '-';
+            this.shuffleItemAnswers (existingItemsLen + index);
         }
     }
 
@@ -218,7 +212,7 @@ class Execise extends Component {
     render() {
 
         // Data already retrieved, show questions or result summary
-        if (this.state.items.length > 0) {
+        if (this.state.flowStep === "done") {
             if (this.state.currentIndex >= this.state.items.length) {
                 return (<ResultPie 
                             title=''
@@ -247,57 +241,116 @@ class Execise extends Component {
 
         // no items loaded
         // wait component mount
-        if (this.state.username === '')
-            return(<Container> Loading </Container>)
+        if (!this.state.mounted)
+            return(<Container> Loading </Container>);
 
         // No data, retrieve it first. 
-        return (
-            <div>
-                <Connect query={graphqlOperation( queries.queryQuestionsByIndex, 
-                                    {index: this.props.location.execiseProps.lastFinishedIndex, 
-                                     limit: 60} )}>
-                {/* <Connect query={graphqlOperation(
-                                    this.getGraphQLOperation(this.props.location.execiseProps.flowStep), 
-                                    this.getGraphQLParam(this.props.location.execiseProps.flowStep, 
-                                                         this.state.username))}> */}
-                    {({ data, loading, errors }) => {
-        
-                        if (loading || !data) return (<h3>Loading...</h3>);
-                        if (errors.lenth > 0 ) return (<h3>Error</h3>);
+        switch (this.state.flowStep) {
+            case "study" :
+                return (
+                    <div>
+                        <Connect mutation={graphqlOperation(mutations.createGafiveHistory)}>
+                        {({mutation}) => {
+                            this.state.sendHistory = mutation;
+                            console.log ('sendHistory assigned.');          
+                        }}
+                        </Connect>
 
-                        this.organiseDate (this.props.location.execiseProps.flowStep, data);
-                       
-                        console.log ('result array: ', this.state.results);                   
-        
-                        return (
-                            <Container>
-                            <ResultBar 
-                                results={ this.state.results }
-                            />
-                            <Questions 
-                                contents={ this.state.items[this.state.currentIndex] }
-                                handleOptionChange={ this.handleOptionChange }
-                                selectedOption={ this.state.selectedOption }
-                                onClick={ this.handleSubmit }
-                                buttonText={ this.state.buttonText }
-                            />
-                            <div>
-                                { this.state.remainSeconds }
-                            </div>
-                            </Container>
-                        );
-                    }}
-                </Connect>
+                        <Connect mutation={graphqlOperation(mutations.updateGafiveHistory)}>
+                        {({mutation}) => {
+                            this.state.updateHistory = mutation;
+                            console.log ('updateHistory assigned.');
+                        }}
+                        </Connect>
 
-                <Connect mutation={graphqlOperation(mutations.createGafiveHistory)}>
-                  {({mutation}) => {
-                      this.state.sendHistory = mutation;
-                      return (<div></div>);
-                  }}
-                </Connect>
+                        <Connect query={graphqlOperation( queries.queryQuestionsByIndex, 
+                                            {index: this.props.location.execiseProps.lastFinishedIndex, 
+                                            limit: 60} )}>
+                            {({ data, loading, errors }) => {
+                
+                                if (loading || !data) return (<h3>Loading...</h3>);
+                                if (errors.lenth > 0 ) return (<h3>Error</h3>);
 
-            </div>
-        );
+                                this.organiseDate ("study", data);
+                            
+                                console.log ('result array: ', this.state.results);                   
+
+                            }}
+                        </Connect>
+                        
+                    </div>
+                );
+            case "goover":
+                return (
+                    <div>
+                        <Connect mutation={graphqlOperation(mutations.createGafiveHistory)}>
+                            {({mutation}) => {
+                                this.state.sendHistory = mutation;
+                                console.log ('sendHistory assigned.');          
+                            }}
+                            </Connect>
+
+                            <Connect mutation={graphqlOperation(mutations.updateGafiveHistory)}>
+                            {({mutation}) => {
+                                this.state.updateHistory = mutation;
+                                console.log ('updateHistory assigned.');
+                            }}
+                        </Connect>
+
+                        <Connect query={graphqlOperation( queries.getHistoryItemsList, 
+                                                    {filter: { result: {eq: false},
+                                                            genre: {eq: "test"} } , 
+                                                    limit: 500} )}>
+                            {({ data, loading, errors }) => {
+                                        
+                                        if (loading || !data) return (<h3>Loading...</h3>);
+                                        if (errors.lenth > 0 ) return (<h3>Error</h3>);
+
+                                        this.organiseDate ("goover", data);
+                                    
+                                        console.log ('result array: ', this.state.results);
+                            }}
+
+                        </Connect>
+                    </div>
+                );
+            case "audit":
+                return (
+                    <div>
+                        <Connect mutation={graphqlOperation(mutations.createGafiveHistory)}>
+                        {({mutation}) => {
+                            this.state.sendHistory = mutation;
+                            console.log ('sendHistory assigned.');          
+                        }}
+                        </Connect>
+
+                        <Connect mutation={graphqlOperation(mutations.updateGafiveHistory)}>
+                        {({mutation}) => {
+                            this.state.updateHistory = mutation;
+                            console.log ('updateHistory assigned.');
+                        }}
+                        </Connect>
+
+                        <Connect query={graphqlOperation( queries.getHistoryItemsList, 
+                                                    {filter: { result: {eq: true},
+                                                            genre: {eq: "test"} } , 
+                                                    limit: 500} )}>
+                            {({ data, loading, errors }) => {
+                                        
+                                        if (loading || !data) return (<h3>Loading...</h3>);
+                                        if (errors.lenth > 0 ) return (<h3>Error</h3>);
+
+                                        this.organiseDate ("audit", data);
+                                    
+                                        console.log ('result array: ', this.state.results);
+                            }}
+
+                        </Connect>
+                    </div>
+                );
+            default:
+                return (<div></div>);
+         }
     }
 }
 

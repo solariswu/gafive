@@ -12,7 +12,7 @@ class Home extends Component {
     super(props);
     this.state = {
       loading: false,
-      round: 1,
+      round: 0,
       lastFinishedIndex: -2,
       timeoutValue: 60 // todo, configurable later
     };
@@ -21,7 +21,7 @@ class Home extends Component {
   render () {
         if (this.state.lastFinishedIndex === -2) 
           return (
-            <Connect query={graphqlOperation( queries.queryLastestIndex, {round: 1} )}>
+            <Connect query={graphqlOperation( queries.queryLastestIndex, {} )}>
               {({ data, loading, errors }) => {
                 console.log ('rendering 1', data, loading, errors);
                 if (loading || !data) return (<h3>Loading...</h3>);
@@ -35,10 +35,12 @@ class Home extends Component {
                 if (itemData.items.length === 0) 
                   this.setState({
                     lastFinishedIndex: 0,
+                    round:1
                   });
                 else 
                   this.setState({
                     lastFinishedIndex: itemData.items[0].itemId,
+                    round: itemData.items[0].round
                   });
               }}
             </Connect>
@@ -54,7 +56,7 @@ class Home extends Component {
                                pathname:'/execise',
                                execiseProps:{
                                    flowStep: 'goover',
-                                   round: this.state.round,
+                                   round: 2,//this.state.round,
                                    lastFinishedIndex: this.state.lastFinishedIndex,
                                    timeoutValue: this.state.timeoutValue
                                }

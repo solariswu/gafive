@@ -83,16 +83,8 @@ export const listGafiveHistories = `query ListGafiveHistories(
   }
 }
 `;
-export const queryGafiveHistoriesByUsernameDateIndex = `query QueryGafiveHistoriesByUsernameDateIndex(
-  $username: String!
-  $first: Int
-  $after: String
-) {
-  queryGafiveHistoriesByUsernameDateIndex(
-    username: $username
-    first: $first
-    after: $after
-  ) {
+export const queryLastestIndex = `query QueryLastestIndex($round: Int) {
+  queryLastestIndex(round: $round) {
     items {
       id
       username
@@ -107,8 +99,20 @@ export const queryGafiveHistoriesByUsernameDateIndex = `query QueryGafiveHistori
   }
 }
 `;
-export const queryLastestIndex = `query QueryLastestIndex($round: Int) {
-  queryLastestIndex(round: $round) {
+export const getHistoryItemsList = `query GetHistoryItemsList(
+  $startFrom: String
+  $acsending: Boolean
+  $limit: Int
+  $filter: TableGafiveHistoryFilterInput
+  $nextToken: String
+) {
+  getHistoryItemsList(
+    startFrom: $startFrom
+    acsending: $acsending
+    limit: $limit
+    filter: $filter
+    nextToken: $nextToken
+  ) {
     items {
       id
       username
@@ -118,6 +122,14 @@ export const queryLastestIndex = `query QueryLastestIndex($round: Int) {
       result
       round
       genre
+      content {
+        base
+        A
+        B
+        C
+        D
+        Answer
+      }
     }
     nextToken
   }
