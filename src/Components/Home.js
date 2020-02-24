@@ -56,7 +56,7 @@ class Home extends Component {
                                pathname:'/execise',
                                execiseProps:{
                                    flowStep: 'goover',
-                                   round: 2,//this.state.round,
+                                   round: 1,//this.state.round,
                                    lastFinishedIndex: this.state.lastFinishedIndex,
                                    timeoutValue: this.state.timeoutValue
                                }

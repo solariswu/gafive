@@ -17,3 +17,5 @@ export const QUESTION_TITLES = [
 ];
 
 export const MAX_RESULT_DISPLAY_IN_BAR = 16;
+
+export const DAILY_NEW_STUDY_ITEMS = 150;

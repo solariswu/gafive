@@ -10,6 +10,7 @@ import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import { Container } from 'react-bootstrap';
 import { withRouter } from 'react-router';
 
+import { DAILY_NEW_STUDY_ITEMS } from '../consts/Const';
 import { getFormatedDate, getFormatedTimestamp, randomsort } from '../consts/Utilities';
 
 import { ResultPie } from './ResultPie';
@@ -29,7 +30,7 @@ class Execise extends Component {
             buttonText: 'Submit',
             selectedOption: '',
             loading: true,
-            flowStep: "study",
+            flowStep: "gover",
             round: this.props.location.execiseProps.round,
             remainSeconds: this.props.location.execiseProps.timeoutValue // todo, configurable later
         };
@@ -45,7 +46,7 @@ class Execise extends Component {
             itemId: currentItem.index,
             response: userAnswer,
             result: userAnswer === currentItem.Answer,
-            round: this.props.location.execiseProps.round,
+            round: currentItem.round,
             genre: 'test'
         }
     
@@ -151,8 +152,8 @@ class Execise extends Component {
     componentDidMount() {
         console.log ('exec flow step:', this.props.location.execiseProps);
             
-        if (this.props.location.execiseProps.round > 1)
-            this.state.flowStep = "goover";
+        // if (this.props.location.execiseProps.round > 1)
+        this.state.flowStep = "goover";
             
         this.state.mounted = true;
             
@@ -166,39 +167,49 @@ class Execise extends Component {
 
         switch (flowStep) {
             case 'study':
-                if (itemData.items.length < 60) {
-                    this.state.round = this.state.round + 1;
-                    this.state.flowStep = "goover";
-                }
-                else 
-                    this.state.flowStep = "done";
+                // if (itemData.items.length < 60) {
+                this.state.flowStep = "done";
+                // }
+                // else 
+                    // this.state.flowStep = "done";
                 break;
             case 'goover':
-                if (itemData.items.length + this.state.items.length > 60)
-                    itemData.items = itemData.items.slice(0, 60 - this.state.items.length);
-                this.state.flowStep = "audit";
+                // if (itemData.items.length + this.state.items.length > 60)
+                    // itemData.items = itemData.items.slice(0, 60 - this.state.items.length);
+                this.state.flowStep = "study";
                 break;
-            case 'audit': 
-                // randomly pick 20 questions which answered correctly.
-                itemData.items.sort(randomsort);
-                itemData.items = itemData.items.slice(0, 20);
-                this.state.flowStep = "done";
-                break;
+            // case 'audit': 
+            //     // randomly pick 20 questions which answered correctly.
+            //     itemData.items.sort(randomsort);
+            //     itemData.items = itemData.items.slice(0, 20);
+            //     this.state.flowStep = "done";
+            //     break;
             default:
                 break;
         }
 
         const existingItemsLen = this.state.items.length;
+        const date = new Date();
+        const today = getFormatedDate(date) + 'T00:00:00Z'; 
 
          // initiate result.
          for (let index = 0; index < itemData.items.length; index ++) {
-            if (type === 'queryQuestionsByIndex') {
-                this.state.items[existingItemsLen + index] = itemData.items[index];
-                this.state.items[existingItemsLen + index].historyId = "";
-            }
-            else {
-                this.state.items[existingItemsLen + index] = itemData.items[index].content;
-                this.state.items[existingItemsLen + index].historyId = itemData.items[index].id;
+            if (type === 'getHistoryItemsList' && itemData.items[index].timestamp >= today) 
+                break;
+
+            switch (type) {
+                case 'queryQuestionsByIndex' :
+                    this.state.items[existingItemsLen + index] = itemData.items[index];
+                    this.state.items[existingItemsLen + index].historyId = "";
+                    this.state.items[existingItemsLen + index].round = 1;
+                break;
+                case 'getHistoryItemsList' :                        
+                    this.state.items[existingItemsLen + index] = itemData.items[index].content;
+                    this.state.items[existingItemsLen + index].historyId = itemData.items[index].id;
+                    this.state.items[existingItemsLen + index].round = itemData.items[index].round + 1;
+                    break;
+                default:
+                    break;
             }
             this.state.results[existingItemsLen + index] = '-';
             this.shuffleItemAnswers (existingItemsLen + index);
@@ -265,7 +276,7 @@ class Execise extends Component {
 
                         <Connect query={graphqlOperation( queries.queryQuestionsByIndex, 
                                             {index: this.props.location.execiseProps.lastFinishedIndex, 
-                                            limit: 60} )}>
+                                            limit: DAILY_NEW_STUDY_ITEMS} )}>
                             {({ data, loading, errors }) => {
                 
                                 if (loading || !data) return (<h3>Loading...</h3>);
@@ -299,8 +310,8 @@ class Execise extends Component {
 
                         <Connect query={graphqlOperation( queries.getHistoryItemsList, 
                                                     {filter: { result: {eq: false},
-                                                            genre: {eq: "test"} } , 
-                                                    limit: 500} )}>
+                                                               genre:  {ne: "reviewed"} } , 
+                                                    limit: 1000} )}>
                             {({ data, loading, errors }) => {
                                         
                                         if (loading || !data) return (<h3>Loading...</h3>);
@@ -314,40 +325,40 @@ class Execise extends Component {
                         </Connect>
                     </div>
                 );
-            case "audit":
-                return (
-                    <div>
-                        <Connect mutation={graphqlOperation(mutations.createGafiveHistory)}>
-                        {({mutation}) => {
-                            this.state.sendHistory = mutation;
-                            console.log ('sendHistory assigned.');          
-                        }}
-                        </Connect>
+            // case "audit":
+            //     return (
+            //         <div>
+            //             <Connect mutation={graphqlOperation(mutations.createGafiveHistory)}>
+            //             {({mutation}) => {
+            //                 this.state.sendHistory = mutation;
+            //                 console.log ('sendHistory assigned.');          
+            //             }}
+            //             </Connect>
 
-                        <Connect mutation={graphqlOperation(mutations.updateGafiveHistory)}>
-                        {({mutation}) => {
-                            this.state.updateHistory = mutation;
-                            console.log ('updateHistory assigned.');
-                        }}
-                        </Connect>
+            //             <Connect mutation={graphqlOperation(mutations.updateGafiveHistory)}>
+            //             {({mutation}) => {
+            //                 this.state.updateHistory = mutation;
+            //                 console.log ('updateHistory assigned.');
+            //             }}
+            //             </Connect>
 
-                        <Connect query={graphqlOperation( queries.getHistoryItemsList, 
-                                                    {filter: { result: {eq: true},
-                                                            genre: {eq: "test"} } , 
-                                                    limit: 500} )}>
-                            {({ data, loading, errors }) => {
+            //             <Connect query={graphqlOperation( queries.getHistoryItemsList, 
+            //                                         {filter: { result: {eq: true},
+            //                                                 genre: {eq: "test"} } , 
+            //                                         limit: 500} )}>
+            //                 {({ data, loading, errors }) => {
                                         
-                                        if (loading || !data) return (<h3>Loading...</h3>);
-                                        if (errors.lenth > 0 ) return (<h3>Error</h3>);
+            //                             if (loading || !data) return (<h3>Loading...</h3>);
+            //                             if (errors.lenth > 0 ) return (<h3>Error</h3>);
 
-                                        this.organiseDate ("audit", data);
+            //                             this.organiseDate ("audit", data);
                                     
-                                        console.log ('result array: ', this.state.results);
-                            }}
+            //                             console.log ('result array: ', this.state.results);
+            //                 }}
 
-                        </Connect>
-                    </div>
-                );
+            //             </Connect>
+            //         </div>
+            //     );
             default:
                 return (<div></div>);
          }

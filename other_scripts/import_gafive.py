@@ -65,7 +65,7 @@ def main():
                     'S': str(baseStr)
                 },
                 'Answer': {
-                    'S': str(sheet.cell_value(i, 4 + ord(sheet.cell_value(i,9))- ord('A')))
+                    'S': str(sheet.cell_value(i, 4 + ord(sheet.cell_value(i,9).upper())- ord('A')))
                 },
                 'type': {
                     'S': str(int(sheet.cell_value(i,0)))
