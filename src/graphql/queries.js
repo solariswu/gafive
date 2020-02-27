@@ -11,6 +11,7 @@ export const getGaFiveQList = `query GetGaFiveQList($idx: String!, $index: Int!)
     C
     D
     Answer
+    Hint
   }
 }
 `;
@@ -29,6 +30,7 @@ export const listGaFiveQLists = `query ListGaFiveQLists(
       C
       D
       Answer
+      Hint
     }
     nextToken
   }
@@ -45,6 +47,7 @@ export const queryQuestionsByIndex = `query QueryQuestionsByIndex($index: Int!, 
       C
       D
       Answer
+      Hint
     }
     nextToken
   }
@@ -129,6 +132,7 @@ export const getHistoryItemsList = `query GetHistoryItemsList(
         C
         D
         Answer
+        Hint
       }
     }
     nextToken

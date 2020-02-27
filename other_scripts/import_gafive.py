@@ -42,7 +42,10 @@ def main():
         #else :
         baseStr = sheet.cell_value(i,3)
 
-        item_key = dict({
+        hintStr = sheet.cell_value(i,10)
+
+        if hintStr == '' :
+            item_key = dict({
                 'idx': {
                     'S': 'partitionA',
                 },
@@ -68,12 +71,48 @@ def main():
                     'S': str(sheet.cell_value(i, 4 + ord(sheet.cell_value(i,9).upper())- ord('A')))
                 },
                 'type': {
-                    'S': str(int(sheet.cell_value(i,0)))
+                    'S': str(sheet.cell_value(i,0))
                 },
                 'index': {
                     'N': str(i)
                 }
-            })
+            }) 
+        else :
+            item_key = dict({
+                    'idx': {
+                        'S': 'partitionA',
+                    },
+                    'id': {
+                        'S': idStr,
+                    },
+                    'A': {
+                        'S': str(sheet.cell_value(i,4))
+                    },
+                    'B': {
+                        'S': str(sheet.cell_value(i,5))
+                    },
+                    'C': {
+                        'S': str(sheet.cell_value(i,6))
+                    },
+                    'D': {
+                        'S': str(sheet.cell_value(i,7))
+                    },
+                    'base': {
+                        'S': str(baseStr)
+                    },
+                    'Answer': {
+                        'S': str(sheet.cell_value(i, 4 + ord(sheet.cell_value(i,9).upper())- ord('A')))
+                    },
+                    'type': {
+                        'S': str(sheet.cell_value(i,0))
+                    },
+                    'index': {
+                        'N': str(i)
+                    },
+                    'Hint': {
+                        'S': str(sheet.cell_value(i,10))
+                    }
+                })
 
         print (item_key)
         response = client.put_item(
