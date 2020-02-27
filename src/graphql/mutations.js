@@ -4,7 +4,6 @@
 export const createGafiveHistory = `mutation CreateGafiveHistory($input: CreateGafiveHistoryInput!) {
   createGafiveHistory(input: $input) {
     id
-    username
     timestamp
     itemId
     response

@@ -207,6 +207,7 @@ class Execise extends Component {
                     this.state.items[existingItemsLen + index] = itemData.items[index].content;
                     this.state.items[existingItemsLen + index].historyId = itemData.items[index].id;
                     this.state.items[existingItemsLen + index].round = itemData.items[index].round + 1;
+                    this.state.items[existingItemsLen + index].index = itemData.items[index].itemId;
                     break;
                 default:
                     break;
