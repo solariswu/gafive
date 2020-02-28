@@ -65,7 +65,10 @@ export const Questions = (props) => {
                 if (props.positive)
                     return (
                         <Fade in={true}>
-                            <div id='hint'> Correct! <br /></div>
+                            <div id='hint'> 
+                                <p>Correct! </p>
+                                {props.content}
+                            </div>
                         </Fade>
                     );
                 else
