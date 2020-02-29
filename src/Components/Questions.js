@@ -79,7 +79,7 @@ export const Questions = (props) => {
                             </div>
                             <div>
                             {translations.map ((translate, idx) => 
-                                <div id={idx}>{translate}</div>)}
+                                <p id={idx} className={idx%2 == 0? "text-danger" : "text-dark"}>{translate}</p>) }
                             </div>
                         </div>
                     );
@@ -88,12 +88,12 @@ export const Questions = (props) => {
                         <div>
                             <div id='hint'> 
                                 <p> <font className="text-danger">Not correct! </font> 
-                                    The answer is " {props.answer} "</p> 
+                                    The answer is "{props.answer}"</p> 
                                 {props.content}
                             </div>
                             <div>
                             { translations.map ((translate, idx) => 
-                                <div id={idx}>{translate}</div>) }
+                                <p id={idx} className={idx%2 == 0? "text-danger" : "text-dark"} >{translate}</p>) }
                             </div>
                         </div>
                     );

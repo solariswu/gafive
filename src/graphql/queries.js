@@ -48,6 +48,7 @@ export const queryQuestionsByIndex = `query QueryQuestionsByIndex($index: Int!, 
       D
       Answer
       Hint
+      translation
     }
     nextToken
   }
