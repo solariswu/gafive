@@ -44,6 +44,10 @@ def main():
 
         hintStr = sheet.cell_value(i,10)
 
+        tranStr = sheet.cell_value(i,11)
+        if tranStr == '':
+            tranStr = '.'
+
         if hintStr == '' :
             item_key = dict({
                 'idx': {
@@ -75,6 +79,9 @@ def main():
                 },
                 'index': {
                     'N': str(i)
+                },
+                'translation': {
+                    'S': tranStr
                 }
             }) 
         else :
@@ -111,6 +118,9 @@ def main():
                     },
                     'Hint': {
                         'S': str(sheet.cell_value(i,10))
+                    },
+                    'Translation': {
+                        'S': tranStr
                     }
                 })
 

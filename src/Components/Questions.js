@@ -61,24 +61,41 @@ export const Questions = (props) => {
         
         const Hint = (props) => {
 
+            let translations = [' ', ' '];
+
+            if (props.translation != null)
+                translations = props.translation.split(" ");
+
+            console.log ("translations:", translations);
+            console.log ("props.translation:", props.translation);
+
             if (props.show) 
                 if (props.positive)
                     return (
-                        <Fade in={true}>
+                        <div>
                             <div id='hint'> 
                                 <p>Correct! </p>
                                 {props.content}
                             </div>
-                        </Fade>
+                            <div>
+                            {translations.map ((translate, idx) => 
+                                <div id={idx}>{translate}</div>)}
+                            </div>
+                        </div>
                     );
                 else
                     return (
-                        <Fade in={true}>
+                        <div>
                             <div id='hint'> 
-                                <p className="text-danger">Not correct! </p> 
+                                <p> <font className="text-danger">Not correct! </font> 
+                                    The answer is " {props.answer} "</p> 
                                 {props.content}
                             </div>
-                        </Fade>
+                            <div>
+                            { translations.map ((translate, idx) => 
+                                <div id={idx}>{translate}</div>) }
+                            </div>
+                        </div>
                     );
 
             return (<Fade in={false}><div id='hint'></div></Fade>)
@@ -101,6 +118,8 @@ export const Questions = (props) => {
                             show={ props.buttonText === 'Next' } 
                             content={ props.contents.Hint }
                             positive={ props.selectedOption === props.contents.Answer }
+                            answer={ props.contents.Answer }
+                            translation={ props.contents.translation }
                         />
                     </Col>
                     <Col xs={4}>

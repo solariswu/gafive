@@ -168,6 +168,8 @@ class Execise extends Component {
         switch (flowStep) {
             case 'study':
                 // if (itemData.items.length < 60) {
+                if (type !== 'queryQuestionsByIndex')
+                    return (<div></div>);
                 this.state.flowStep = "done";
                 // }
                 // else 
@@ -176,6 +178,8 @@ class Execise extends Component {
             case 'goover':
                 // if (itemData.items.length + this.state.items.length > 60)
                     // itemData.items = itemData.items.slice(0, 60 - this.state.items.length);
+                if (type !== 'getHistoryItemsList')
+                    return (<div></div>);
                 this.state.flowStep = "study";
                 break;
             // case 'audit': 
@@ -226,11 +230,12 @@ class Execise extends Component {
         // Data already retrieved, show questions or result summary
         if (this.state.flowStep === "done") {
             if (this.state.currentIndex >= this.state.items.length) {
-                return (<ResultPie 
-                            title=''
-                            results={ this.state.results }
-                            nextUrl='/workflow'
-                            />);
+                return (<div></div>);
+                // <ResultPie 
+                //             title='test'
+                //             results={ this.state.results }
+                //             nextUrl='/workflow'
+                //             />);
             }
             return (
                 <Container>
