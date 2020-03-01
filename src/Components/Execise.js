@@ -315,8 +315,8 @@ class Execise extends Component {
                         </Connect>
 
                         <Connect query={graphqlOperation( queries.getHistoryItemsList, 
-                                                    {filter: { result: {eq: false},
-                                                               genre:  {ne: "reviewed"} } , 
+                                                    {filter: { result: {eq: false} },//, everytime will redo 
+                                                               //genre:  {ne: "reviewed"} } , //yesterday's false
                                                     limit: 1000} )}>
                             {({ data, loading, errors }) => {
                                         
