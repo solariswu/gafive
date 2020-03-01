@@ -74,13 +74,13 @@ export const Questions = (props) => {
                     return (
                         <div>
                             <div id='hint'> 
-                                <p>Correct! </p>
+                                <p className="text-success">Correct! </p>
                                 {props.content}
                             </div>
                             <hr />
                             <div>
                             {translations.map ((translate, idx) => 
-                                <p id={idx} className={idx%2 == 0? "text-danger" : "text-dark"}>{translate}</p>) }
+                                <p id={idx}>{translate}</p>) }
                             </div>
                         </div>
                     );
@@ -95,7 +95,7 @@ export const Questions = (props) => {
                             <hr />
                             <div>
                             { translations.map ((translate, idx) => 
-                                <p id={idx} className={idx%2 == 0? "text-danger" : "text-dark"} >{translate}</p>) }
+                                <p id={idx} >{translate}</p>) }
                             </div>
                         </div>
                     );

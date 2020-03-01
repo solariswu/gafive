@@ -31,6 +31,7 @@ export const listGaFiveQLists = `query ListGaFiveQLists(
       D
       Answer
       Hint
+      translation
     }
     nextToken
   }
@@ -134,6 +135,7 @@ export const getHistoryItemsList = `query GetHistoryItemsList(
         D
         Answer
         Hint
+        translation
       }
     }
     nextToken
