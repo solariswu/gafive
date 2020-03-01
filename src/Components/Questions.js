@@ -64,7 +64,7 @@ export const Questions = (props) => {
             let translations = [' ', ' '];
 
             if (props.translation != null)
-                translations = props.translation.split(" ");
+                translations = props.translation.split("/");
 
             console.log ("translations:", translations);
             console.log ("props.translation:", props.translation);
@@ -77,6 +77,7 @@ export const Questions = (props) => {
                                 <p>Correct! </p>
                                 {props.content}
                             </div>
+                            <hr />
                             <div>
                             {translations.map ((translate, idx) => 
                                 <p id={idx} className={idx%2 == 0? "text-danger" : "text-dark"}>{translate}</p>) }
@@ -91,6 +92,7 @@ export const Questions = (props) => {
                                     The answer is "{props.answer}"</p> 
                                 {props.content}
                             </div>
+                            <hr />
                             <div>
                             { translations.map ((translate, idx) => 
                                 <p id={idx} className={idx%2 == 0? "text-danger" : "text-dark"} >{translate}</p>) }
