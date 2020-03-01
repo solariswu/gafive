@@ -114,17 +114,8 @@ export const Questions = (props) => {
                     handleOptionChange={ props.handleOptionChange }
                 />
                 {/* float button to right */}
-                <Row>
-                    <Col xs={8}>
-                        <Hint 
-                            show={ props.buttonText === 'Next' } 
-                            content={ props.contents.Hint }
-                            positive={ props.selectedOption === props.contents.Answer }
-                            answer={ props.contents.Answer }
-                            translation={ props.contents.translation }
-                        />
-                    </Col>
-                    <Col xs={4}>
+                <Row> 
+                    <Col xs={6}>
                         <div style={{display: "flex"}}>
                             <Button 
                                 style={{ marginLeft: "auto" }} 
@@ -133,7 +124,8 @@ export const Questions = (props) => {
                                 disabled={props.buttonText!=="Submit"}>
                                 Submit </Button>
                         </div>
-                        <br />
+                    </Col>
+                    <Col xs={6}>
                         <div style={{display: "flex"}}>
                             <Button 
                                 style={{ marginLeft: "auto" }} 
@@ -142,7 +134,15 @@ export const Questions = (props) => {
                                 disabled={props.buttonText!=="Next"}>
                                 Next </Button>
                         </div>
-                    </Col>
+                    </Col> 
+                </Row>
+                <Row>
+                    <Hint show={ props.buttonText === 'Next' } 
+                          content={ props.contents.Hint }
+                          positive={ props.selectedOption === props.contents.Answer }
+                          answer={ props.contents.Answer }
+                          translation={ props.contents.translation }
+                        />
                 </Row>
             </div>
         );
