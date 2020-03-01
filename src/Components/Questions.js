@@ -129,8 +129,18 @@ export const Questions = (props) => {
                             <Button 
                                 style={{ marginLeft: "auto" }} 
                                 id="submit" 
-                                onClick={props.onClick}> 
-                                { props.buttonText } </Button>
+                                onClick={props.onClick}
+                                disabled={props.buttonText!=="Submit"}>
+                                Submit </Button>
+                        </div>
+                        <br />
+                        <div style={{display: "flex"}}>
+                            <Button 
+                                style={{ marginLeft: "auto" }} 
+                                id="next" 
+                                onClick={props.onClick}
+                                disabled={props.buttonText!=="Next"}>
+                                Next </Button>
                         </div>
                     </Col>
                 </Row>
