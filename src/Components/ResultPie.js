@@ -6,7 +6,7 @@ import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import { Button, Col, Row, Container } from 'react-bootstrap';
 
 
-export const ResultPie = (title, results, nextUrl) => {
+export const ResultPie = (props) => {
 
     let data = {
         labels: [
@@ -26,10 +26,11 @@ export const ResultPie = (title, results, nextUrl) => {
         }]
     };
 
-    let length = results.length;
+    console.log ("ResultPie: result - ", props.results);
+    let length = props.results.length;
     let amountTrue = 0;
-    for (let i = 0; i < results.length; i++) {
-      if (results[i] === true) 
+    for (let i = 0; i < props.results.length; i++) {
+      if (props.results[i] === true) 
         amountTrue ++;
     }
 
@@ -38,7 +39,7 @@ export const ResultPie = (title, results, nextUrl) => {
 
     return (
         <Container>
-            <h4 className="text-center">{title}</h4>
+            <h4 className="text-center">{props.title}</h4>
             <Pie data={data} />
             <Row>
                 <Col></Col>
@@ -51,10 +52,13 @@ export const ResultPie = (title, results, nextUrl) => {
                 <Col></Col>
             </Row>
             <Row>
-                <Col className="col mx-auto">
-                <Button as={Link} to={nextUrl}>
+                <Col xs={6}>
+                <Button style={{ marginLeft: "auto" }} as={Link} to={props.nextUrl}>
                     Back
                 </Button>
+                </Col>
+                <Col className="mx-auto">
+                    <div />
                 </Col>
             </Row>
         </Container>

@@ -250,12 +250,13 @@ class Execise extends Component {
         // Data already retrieved, show questions or result summary
         if (this.state.flowStep === "done") {
             if (this.state.currentIndex >= this.state.items.length) {
-                return (<div></div>);
-                // <ResultPie 
-                //             title='test'
-                //             results={ this.state.results }
-                //             nextUrl='/workflow'
-                //             />);
+                let title = getFormatedDate( new Date() );
+                // return (<div></div>);
+                return(<ResultPie 
+                            title={ title }
+                            results={ this.state.results }
+                            nextUrl='/'
+                            />);
             }
 
             return (
