@@ -79,7 +79,7 @@ class Execise extends Component {
                 let nextItem = this.state.items[this.state.currentIndex+1];
 
                 console.log ('handleSubmit: nextItem-', nextItem);
-                if (nextItem.type === 'Maths' || nextItem.type === 'Pattern')
+                if (nextItem.type === 'Maths' || nextItem.type === 'Pattern' || nextItem.type === 'Logic')
                    this.setState({remainSeconds: 150});
                 else
                    this.setState({remainSeconds: this.props.location.execiseProps.timeoutValue});
@@ -211,7 +211,7 @@ class Execise extends Component {
 
         if (this.state.flowStep === "done" && this.state.items.length > 0) {
             let firstItemType = this.state.items[0].type;
-            if (firstItemType === 'Maths' || firstItemType === 'Pattern') {
+            if (firstItemType === 'Maths' || firstItemType === 'Pattern' || firstItemType === 'Logic') {
                 console.log("firt time is maths, set timer to 150");
                 this.state.remainSeconds = 150;
             }
