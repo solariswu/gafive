@@ -32,6 +32,7 @@ export const listGaFiveQLists = `query ListGaFiveQLists(
       Answer
       Hint
       translation
+      type
     }
     nextToken
   }
@@ -50,6 +51,7 @@ export const queryQuestionsByIndex = `query QueryQuestionsByIndex($index: Int!, 
       Answer
       Hint
       translation
+      type
     }
     nextToken
   }
@@ -136,6 +138,7 @@ export const getHistoryItemsList = `query GetHistoryItemsList(
         Answer
         Hint
         translation
+        type
       }
     }
     nextToken

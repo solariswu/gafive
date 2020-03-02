@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { graphqlOperation, Auth } from "aws-amplify";
+import { graphqlOperation } from "aws-amplify";
 
 import { Connect } from "aws-amplify-react";
 import * as queries from '../graphql/queries';
@@ -75,6 +75,15 @@ class Execise extends Component {
         let currentItem = this.state.items[this.state.currentIndex];
 
         if (this.state.buttonText === 'Next') {
+            if (this.state.currentIndex + 1 < this.state.items.length) {
+                let nextItem = this.state.items[this.state.currentIndex+1];
+
+                console.log ('handleSubmit: nextItem-', nextItem);
+                if (nextItem.type === 'Maths' || nextItem.type === 'Pattern')
+                   this.setState({remainSeconds: 150});
+                else
+                   this.setState({remainSeconds: this.props.location.execiseProps.timeoutValue});
+            }
             // clear state
             this.setState({
                 selectedOption: '',
@@ -119,7 +128,6 @@ class Execise extends Component {
     
     resetCoundDown = () => {
         clearInterval(this.interval);
-        this.setState({remainSeconds: this.props.location.execiseProps.timeoutValue});
         this.interval = setInterval(this.tick, 1000);
     }
 
@@ -139,7 +147,7 @@ class Execise extends Component {
             clearInterval (this.interval);
         else {
             const remainSeconds = this.state.remainSeconds - 1;
-
+            
             this.setState({remainSeconds});
 
             if ( remainSeconds <= 0 ) {
@@ -165,21 +173,26 @@ class Execise extends Component {
         const type = Object.keys(data)[0];
         let itemData = data[type];
 
+        console.log ('Execise: organiseData flowType ', flowStep, 
+                        ', data type - ', type, ', data length - ', data.length);
+
         switch (flowStep) {
             case 'study':
                 // if (itemData.items.length < 60) {
-                if (type !== 'queryQuestionsByIndex')
+                if (type !== 'queryQuestionsByIndex') {
+                    console.log ('Execise: Expected <study> Items, but got type - ', type);
                     return (<div></div>);
+                }
+
                 this.state.flowStep = "done";
-                // }
-                // else 
-                    // this.state.flowStep = "done";
                 break;
             case 'goover':
                 // if (itemData.items.length + this.state.items.length > 60)
                     // itemData.items = itemData.items.slice(0, 60 - this.state.items.length);
-                if (type !== 'getHistoryItemsList')
+                if (type !== 'getHistoryItemsList') {
+                    console.log ('Execise: Expected <goover> items, but got type - ', type);
                     return (<div></div>);
+                }
                 this.state.flowStep = "study";
                 break;
             // case 'audit': 
@@ -196,6 +209,13 @@ class Execise extends Component {
         const date = new Date();
         const today = getFormatedDate(date) + 'T00:00:00Z'; 
 
+        if (this.state.flowStep === "done" && this.state.items.length > 0) {
+            let firstItemType = this.state.items[0].type;
+            if (firstItemType === 'Maths' || firstItemType === 'Pattern') {
+                console.log("firt time is maths, set timer to 150");
+                this.state.remainSeconds = 150;
+            }
+        }
          // initiate result.
          for (let index = 0; index < itemData.items.length; index ++) {
             if (type === 'getHistoryItemsList' && itemData.items[index].timestamp >= today) 
@@ -237,6 +257,7 @@ class Execise extends Component {
                 //             nextUrl='/workflow'
                 //             />);
             }
+
             return (
                 <Container>
                     <ResultBar 
@@ -315,9 +336,11 @@ class Execise extends Component {
                         </Connect>
 
                         <Connect query={graphqlOperation( queries.getHistoryItemsList, 
-                                                    {filter: { result: {eq: false} },//, everytime will redo 
+                                                    {filter: { result: {eq: false}, // only round1 false counted
+                                                               round: {eq: 1} },
+                                                                //, everytime will redo 
                                                                //genre:  {ne: "reviewed"} } , //yesterday's false
-                                                    limit: 1000} )}>
+                                                     limit: 1000} )}>
                             {({ data, loading, errors }) => {
                                         
                                         if (loading || !data) return (<h3>Loading...</h3>);

@@ -66,8 +66,8 @@ export const Questions = (props) => {
             if (props.translation != null)
                 translations = props.translation.split("/");
 
-            console.log ("translations:", translations);
-            console.log ("props.translation:", props.translation);
+            // console.log ("translations:", translations);
+            // console.log ("props.translation:", props.translation);
 
             if (props.show) 
                 if (props.positive)

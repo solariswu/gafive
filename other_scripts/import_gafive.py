@@ -23,6 +23,8 @@ def main():
         #     print(str(sheet.cell_value(i, j)))
 
         print (i)
+        print (sheet.cell_value(i, 8)) ## Answer D
+
         idStr = ''
         index = int(sheet.cell_value(i,2))
         if index < 10000 :
@@ -47,6 +49,10 @@ def main():
         tranStr = sheet.cell_value(i,11)
         if tranStr == '':
             tranStr = '.'
+        
+        typeStr = sheet.cell_value(i,8)
+        if typeStr == '':
+            typeStr = " "
 
         if hintStr == '' :
             item_key = dict({
@@ -75,7 +81,7 @@ def main():
                     'S': str(sheet.cell_value(i, 4 + ord(sheet.cell_value(i,9).upper())- ord('A')))
                 },
                 'type': {
-                    'S': str(sheet.cell_value(i,0))
+                    'S': typeStr
                 },
                 'index': {
                     'N': str(i)
@@ -111,7 +117,7 @@ def main():
                         'S': str(sheet.cell_value(i, 4 + ord(sheet.cell_value(i,9).upper())- ord('A')))
                     },
                     'type': {
-                        'S': str(sheet.cell_value(i,0))
+                        'S': typeStr
                     },
                     'index': {
                         'N': str(i)

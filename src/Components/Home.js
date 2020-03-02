@@ -14,7 +14,7 @@ class Home extends Component {
       loading: false,
       round: 0,
       lastFinishedIndex: -2,
-      timeoutValue: 60 // todo, configurable later
+      timeoutValue: 30 // todo, configurable later
     };
   }
 
