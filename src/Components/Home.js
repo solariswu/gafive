@@ -49,13 +49,28 @@ class Home extends Component {
         return (
           <Container>
               <Row>
+              <Col>
+                    <Card className="mt-1" style={{ width: '18rem' }} key='goover'>
+                        <Card.Body>
+                           <Card.Link as={Link} to={{
+                               pathname:'/execise',
+                               execiseProps:{
+                                   flowStep: 'goover',
+                                   round: 1,//this.state.round,
+                                   lastFinishedIndex: this.state.lastFinishedIndex,
+                                   timeoutValue: this.state.timeoutValue
+                               }
+                               }}>Review</Card.Link>
+                        </Card.Body>
+                    </Card>
+                </Col>
                 <Col>
                     <Card className="mt-1" style={{ width: '18rem' }} key='study'>
                         <Card.Body>
                            <Card.Link as={Link} to={{
                                pathname:'/execise',
                                execiseProps:{
-                                   flowStep: 'goover',
+                                   flowStep: 'study',
                                    round: 1,//this.state.round,
                                    lastFinishedIndex: this.state.lastFinishedIndex,
                                    timeoutValue: this.state.timeoutValue

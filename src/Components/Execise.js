@@ -30,7 +30,7 @@ class Execise extends Component {
             buttonText: 'Submit',
             selectedOption: '',
             loading: true,
-            flowStep: "gover",
+            flowStep: this.props.location.execiseProps.flowStep,
             round: this.props.location.execiseProps.round,
             remainSeconds: this.props.location.execiseProps.timeoutValue // todo, configurable later
         };
@@ -161,7 +161,7 @@ class Execise extends Component {
         console.log ('exec flow step:', this.props.location.execiseProps);
             
         // if (this.props.location.execiseProps.round > 1)
-        this.state.flowStep = "goover";
+        // this.state.flowStep = "goover";
             
         this.state.mounted = true;
             
@@ -193,7 +193,7 @@ class Execise extends Component {
                     console.log ('Execise: Expected <goover> items, but got type - ', type);
                     return (<div></div>);
                 }
-                this.state.flowStep = "study";
+                this.state.flowStep = "done";
                 break;
             // case 'audit': 
             //     // randomly pick 20 questions which answered correctly.
