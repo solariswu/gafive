@@ -1,5 +1,3 @@
-import * as queries from '../graphql/queries';
-
 export const QUESTION_CONTENTS = [
     'Identify which word is MOST SIMILAR in meaning to the word listed below.',
     'Identify which word is MOST OPPOSITE in meaning to the workd listed below.',

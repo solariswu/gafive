@@ -7,7 +7,7 @@ import * as mutations from '../graphql/mutations'
 // import * as subscriptions from './graphql/subscriptions';
 
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import { Container } from 'react-bootstrap';
+import { Container, Button} from 'react-bootstrap';
 import { withRouter } from 'react-router';
 
 import { DAILY_NEW_STUDY_ITEMS } from '../consts/Const';
@@ -16,6 +16,10 @@ import { getFormatedDate, getFormatedTimestamp, randomsort } from '../consts/Uti
 import { ResultPie } from './ResultPie';
 import { ResultBar } from './ResultBar';
 import { Questions } from './Questions';
+
+import positiveSnd from '../Resources/correct.mp3';
+import negativeSnd from '../Resources/wrong.wav';
+
 
 class Execise extends Component {
     constructor(props) {
@@ -34,7 +38,19 @@ class Execise extends Component {
             round: this.props.location.execiseProps.round,
             remainSeconds: this.props.location.execiseProps.timeoutValue // todo, configurable later
         };
-      }
+        this.playPositiveSnd = this.playPositiveSnd.bind(this);
+        this.positiveSnd = new Audio(positiveSnd);
+        this.playNegativeSnd = this.playNegativeSnd.bind(this);
+        this.negativeSnd = new Audio(negativeSnd);
+    }
+
+    playPositiveSnd(){
+        this.positiveSnd.play();
+    }
+
+    playNegativeSnd(){
+        this.negativeSnd.play();
+    }
 
     // async 
     async addHistory (sendHistory, userAnswer) {
@@ -101,6 +117,7 @@ class Execise extends Component {
              });
              clearInterval(this.interval);
              this.state.results[this.state.currentIndex] = (this.state.selectedOption === currentItem.Answer);
+             (this.state.selectedOption === currentItem.Answer) ? this.playPositiveSnd() : this.playNegativeSnd ();
              this.addHistory (this.state.sendHistory, this.state.selectedOption);
              if (this.state.items[this.state.currentIndex].historyId !== "") {
                  this.updateHistoryReviewed (this.state.updateHistory, this.state.items[this.state.currentIndex].historyId )
