@@ -57,7 +57,7 @@ class Home extends Component {
                                execiseProps:{
                                    flowStep: 'goover',
                                    round: 1,//this.state.round,
-                                   lastFinishedIndex: 646,
+                                   lastFinishedIndex: this.state.lastFinishedIndex,
                                    timeoutValue: this.state.timeoutValue
                                }
                                }}>Review</Card.Link>
@@ -72,7 +72,7 @@ class Home extends Component {
                                execiseProps:{
                                    flowStep: 'study',
                                    round: 1,//this.state.round,
-                                   lastFinishedIndex: this.state.lastFinishedIndex,
+                                   lastFinishedIndex: 646,
                                    timeoutValue: this.state.timeoutValue
                                }
                                }}>Study</Card.Link>
