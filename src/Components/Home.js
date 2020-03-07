@@ -72,7 +72,7 @@ class Home extends Component {
                                execiseProps:{
                                    flowStep: 'study',
                                    round: 1,//this.state.round,
-                                   lastFinishedIndex: 646,
+                                   lastFinishedIndex: this.state.lastFinishedIndex,
                                    timeoutValue: this.state.timeoutValue
                                }
                                }}>Study</Card.Link>
