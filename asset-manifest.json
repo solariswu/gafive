@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/gafive/static/css/main.5ecd60fb.chunk.css",
+    "main.js": "/gafive/static/js/main.fa8f056d.chunk.js",
+    "main.js.map": "/gafive/static/js/main.fa8f056d.chunk.js.map",
+    "runtime-main.js": "/gafive/static/js/runtime-main.bc18fd04.js",
+    "runtime-main.js.map": "/gafive/static/js/runtime-main.bc18fd04.js.map",
+    "static/css/2.51aad67d.chunk.css": "/gafive/static/css/2.51aad67d.chunk.css",
+    "static/js/2.694587b3.chunk.js": "/gafive/static/js/2.694587b3.chunk.js",
+    "static/js/2.694587b3.chunk.js.map": "/gafive/static/js/2.694587b3.chunk.js.map",
+    "index.html": "/gafive/index.html",
+    "precache-manifest.e039a9a9099cc749d292e39eca5c5cb0.js": "/gafive/precache-manifest.e039a9a9099cc749d292e39eca5c5cb0.js",
+    "service-worker.js": "/gafive/service-worker.js",
+    "static/css/2.51aad67d.chunk.css.map": "/gafive/static/css/2.51aad67d.chunk.css.map",
+    "static/css/main.5ecd60fb.chunk.css.map": "/gafive/static/css/main.5ecd60fb.chunk.css.map",
+    "static/js/2.694587b3.chunk.js.LICENSE.txt": "/gafive/static/js/2.694587b3.chunk.js.LICENSE.txt",
+    "static/media/correct.mp3": "/gafive/static/media/correct.8e3d6124.mp3",
+    "static/media/wrong.wav": "/gafive/static/media/wrong.43b2d487.wav"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.bc18fd04.js",
+    "static/css/2.51aad67d.chunk.css",
+    "static/js/2.694587b3.chunk.js",
+    "static/css/main.5ecd60fb.chunk.css",
+    "static/js/main.fa8f056d.chunk.js"
+  ]
+}
