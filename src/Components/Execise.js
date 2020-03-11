@@ -235,8 +235,9 @@ class Execise extends Component {
         }
          // initiate result.
          for (let index = 0; index < itemData.items.length; index ++) {
-            if (type === 'getHistoryItemsList' && itemData.items[index].timestamp >= today) 
-                break;
+         //   add today's error into review 
+         //   if (type === 'getHistoryItemsList' && itemData.items[index].timestamp >= today) 
+         //       break;
 
             switch (type) {
                 case 'queryQuestionsByIndex' :
