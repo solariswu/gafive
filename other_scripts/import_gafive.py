@@ -125,7 +125,7 @@ def main():
                     'Hint': {
                         'S': str(sheet.cell_value(i,10))
                     },
-                    'Translation': {
+                    'translation': {
                         'S': tranStr
                     }
                 })
