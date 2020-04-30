@@ -17,7 +17,7 @@
     "eslint": "^6.8.0",
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.3",
-    "jquery": "1.9.1",
+    "jquery": "3.5.0",
     "jsquery": "^1.1.1",
     "popper": "^1.0.1",
     "popper.js": "^1.16.0",
